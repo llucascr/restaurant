@@ -1,1 +1,1 @@
-![Diagrama do projeto](diagrama_projeto_restaurante-Banco de Dados.drawio.png)
+![Diagrama do projeto](https://github.com/llucascr/restaurant/blob/develop/diagrama_projeto_restaurante-Banco%20de%20Dados.drawio.png)
