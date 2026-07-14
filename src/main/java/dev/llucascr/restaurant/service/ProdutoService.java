@@ -4,6 +4,7 @@ import dev.llucascr.restaurant.domain.entity.CategoriaProduto;
 import dev.llucascr.restaurant.domain.entity.Produto;
 import dev.llucascr.restaurant.dto.ProdutoRequest;
 import dev.llucascr.restaurant.dto.ProdutoResponse;
+import dev.llucascr.restaurant.exception.RegraNegocioException;
 import dev.llucascr.restaurant.repository.CategoriaProdutoRepository;
 import dev.llucascr.restaurant.repository.ProdutoRepository;
 import org.springframework.data.domain.Page;
@@ -56,12 +57,12 @@ public class ProdutoService {
 
     private Produto buscarProdutoPorId(Long id) {
         return produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new RegraNegocioException("Produto não encontrado"));
     }
 
     private CategoriaProduto buscarCategoriaPorId(Long id) {
         return categoriaProdutoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrado"));
+                .orElseThrow(() -> new RegraNegocioException("Categoria não encontrado"));
     }
 
 }

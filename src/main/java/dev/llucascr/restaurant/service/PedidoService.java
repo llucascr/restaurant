@@ -6,6 +6,7 @@ import dev.llucascr.restaurant.domain.enums.StatusMesa;
 import dev.llucascr.restaurant.domain.enums.StatusPedido;
 import dev.llucascr.restaurant.dto.PedidoRequest;
 import dev.llucascr.restaurant.dto.PedidoResponse;
+import dev.llucascr.restaurant.exception.RegraNegocioException;
 import dev.llucascr.restaurant.repository.MesaRepository;
 import dev.llucascr.restaurant.repository.PedidoRepository;
 import org.springframework.data.domain.Page;
@@ -27,10 +28,10 @@ public class PedidoService {
 
     public PedidoResponse abrirPedido(PedidoRequest request) {
         Mesa mesa = mesaRepository.findById(request.mesaId())
-                .orElseThrow(() -> new RuntimeException("Mesa inexistente"));
+                .orElseThrow(() -> new RegraNegocioException("Mesa inexistente"));
 
         if (mesa.getStatus() != StatusMesa.LIVRE) {
-            throw new RuntimeException("Mesa não está livre para abertura de pedido");
+            throw new RegraNegocioException("Mesa não está livre para abertura de pedido");
         }
 
         Pedido pedido = new Pedido();
@@ -52,7 +53,7 @@ public class PedidoService {
 
     public PedidoResponse buscarPorId(Long id) {
         Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+                .orElseThrow(() -> new RegraNegocioException("Pedido não encontrado"));
         return PedidoResponse.fromEntity(pedido);
     }
 }
