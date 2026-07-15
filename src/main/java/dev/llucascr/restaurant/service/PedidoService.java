@@ -2,28 +2,40 @@ package dev.llucascr.restaurant.service;
 
 import dev.llucascr.restaurant.domain.entity.Mesa;
 import dev.llucascr.restaurant.domain.entity.Pedido;
+import dev.llucascr.restaurant.domain.entity.PedidoItem;
+import dev.llucascr.restaurant.domain.entity.Produto;
+import dev.llucascr.restaurant.domain.enums.StatusItemPedido;
 import dev.llucascr.restaurant.domain.enums.StatusMesa;
 import dev.llucascr.restaurant.domain.enums.StatusPedido;
+import dev.llucascr.restaurant.dto.PedidoItemRequest;
+import dev.llucascr.restaurant.dto.PedidoItemResponse;
 import dev.llucascr.restaurant.dto.PedidoRequest;
 import dev.llucascr.restaurant.dto.PedidoResponse;
 import dev.llucascr.restaurant.exception.RegraNegocioException;
 import dev.llucascr.restaurant.repository.MesaRepository;
+import dev.llucascr.restaurant.repository.PedidoItemRepository;
 import dev.llucascr.restaurant.repository.PedidoRepository;
+import dev.llucascr.restaurant.repository.ProdutoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final MesaRepository mesaRepository;
+    private final ProdutoRepository produtoRepository;
+    private final PedidoItemRepository pedidoItemRepository;
 
-    public PedidoService(PedidoRepository pedidoRepository, MesaRepository mesaRepository) {
+    public PedidoService(PedidoRepository pedidoRepository, MesaRepository mesaRepository, ProdutoRepository produtoRepository, PedidoItemRepository pedidoItemRepository) {
         this.pedidoRepository = pedidoRepository;
         this.mesaRepository = mesaRepository;
+        this.produtoRepository = produtoRepository;
+        this.pedidoItemRepository = pedidoItemRepository;
     }
 
     public PedidoResponse abrirPedido(PedidoRequest request) {
@@ -52,8 +64,49 @@ public class PedidoService {
     }
 
     public PedidoResponse buscarPorId(Long id) {
-        Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Pedido não encontrado"));
+        Pedido pedido = buscarPedidoPorId(id);
         return PedidoResponse.fromEntity(pedido);
+    }
+
+    public PedidoItemResponse adicionarItem(Long pedidoId, PedidoItemRequest request) {
+        Pedido pedido = buscarPedidoPorId(pedidoId);
+
+        if (pedido.getStatus() != StatusPedido.ABERTO) {
+            throw new RegraNegocioException("Só é posi vel adiconar item em pedido aberto");
+        }
+
+        Produto produto = produtoRepository.findById(request.produtoId())
+                .orElseThrow(() -> new RegraNegocioException("Produto não encontrado"));
+
+        if (!produto.getDisponivel()) {
+            throw new RegraNegocioException("Produto indisponível no cardápio");
+        }
+
+        if (request.quantidade() == null || request.quantidade() <= 0) {
+            throw new RegraNegocioException("A quantidade deve ser maior que zero");
+        }
+
+        PedidoItem pedidoItem = new PedidoItem();
+        pedidoItem.setPedido(pedido);
+        pedidoItem.setProduto(produto);
+        pedidoItem.setQuantidade(request.quantidade());
+        pedidoItem.setPrecoUnitario(produto.getPreco());
+        pedidoItem.setObservacao(request.observacao());
+        pedidoItem.setStatus(StatusItemPedido.PENDENTE);
+
+        PedidoItem itemSalvo = pedidoItemRepository.save(pedidoItem);
+        return PedidoItemResponse.fromEntity(itemSalvo);
+    }
+
+
+    public List<PedidoItemResponse> listarItens(Long pedidoId) {
+        buscarPedidoPorId(pedidoId);
+
+        return pedidoItemRepository.findByPedidoId(pedidoId).stream()
+                .map(PedidoItemResponse::fromEntity).collect(Collectors.toList());
+    }
+    private Pedido buscarPedidoPorId(Long pedidoId) {
+        return pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new RegraNegocioException("Pedido não encontrado"));
     }
 }

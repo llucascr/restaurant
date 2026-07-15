@@ -47,7 +47,7 @@
           <mxGeometry height="40" width="220" x="205" y="690" as="geometry" />
         </mxCell>
         <mxCell id="GTCP8JXqzXLoIj-6q5ZN-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="GET /cozinha/itens-pendentes&lt;div&gt;-&amp;gt; /cozinha/itens/{id}/iniciar-preparo&lt;/div&gt;&lt;div&gt;-&amp;gt;&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;/cozinha/itens/{id}/marcar-pronto&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;-&amp;gt;&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;/cozinha/itens/{id}/entregar&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;Regas:&lt;/div&gt;&lt;div&gt;Só item PENDENTE pode ir para EM_PREPARO&lt;/div&gt;&lt;div&gt;Só item EM_PREPARO pode ir para PRONTO&lt;/div&gt;&lt;div&gt;Só item PRONTO pode ir para ENTREGUE&lt;/div&gt;&lt;div&gt;Item CANCELADO não pode mudar de status&amp;nbsp;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="150" width="350" x="40" y="760" as="geometry" />
+          <mxGeometry height="150" width="275" x="40" y="920" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

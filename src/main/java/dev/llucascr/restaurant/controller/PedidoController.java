@@ -1,5 +1,7 @@
 package dev.llucascr.restaurant.controller;
 
+import dev.llucascr.restaurant.dto.PedidoItemRequest;
+import dev.llucascr.restaurant.dto.PedidoItemResponse;
 import dev.llucascr.restaurant.dto.PedidoRequest;
 import dev.llucascr.restaurant.dto.PedidoResponse;
 import dev.llucascr.restaurant.service.PedidoService;
@@ -7,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -32,6 +36,16 @@ public class PedidoController {
     @GetMapping("/{id}")
     public PedidoResponse buscarPorId(@PathVariable Long id){
         return pedidoService.buscarPorId(id);
+    }
+
+    @PostMapping("/{pedidoId}/itens")
+    public PedidoItemResponse adicionarItem(@PathVariable Long pedidoId, @RequestBody PedidoItemRequest request) {
+        return pedidoService.adicionarItem(pedidoId, request);
+    }
+
+    @GetMapping("/{pedidoId}/itens")
+    public List<PedidoItemResponse> listarItens(@PathVariable Long pedidoId) {
+        return pedidoService.listarItens(pedidoId);
     }
 
 }
