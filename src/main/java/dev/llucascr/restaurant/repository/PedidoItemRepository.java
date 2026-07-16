@@ -13,4 +13,6 @@ public interface PedidoItemRepository extends JpaRepository<PedidoItem, Long> {
 
     List<PedidoItem> findByStatusOrderByIdAsc(StatusItemPedido status);
 
+    List<PedidoItem> findByPedidoIdAndStatusNot(Long pedidoId, StatusItemPedido status);
+
 }

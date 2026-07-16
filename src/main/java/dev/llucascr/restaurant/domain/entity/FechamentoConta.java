@@ -15,6 +15,8 @@ public class FechamentoConta {
 
     private BigDecimal subtotal;
 
+    private BigDecimal total;
+
     @Column(name = "taxa_servico")
     private BigDecimal taxaServico;
 
@@ -46,6 +48,14 @@ public class FechamentoConta {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     public BigDecimal getTaxaServico() {
