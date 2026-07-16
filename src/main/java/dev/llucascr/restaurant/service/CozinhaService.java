@@ -7,6 +7,7 @@ import dev.llucascr.restaurant.exception.RegraNegocioException;
 import dev.llucascr.restaurant.repository.PedidoItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -40,6 +41,7 @@ public class CozinhaService {
         }
 
         item.setStatus(StatusItemPedido.EM_PREPARO);
+        item.setDataInicioPreparo(LocalDateTime.now());
 
         return CozinhaItemResponse.fromEntity(pedidoItemRepository.save(item));
     }
@@ -52,6 +54,8 @@ public class CozinhaService {
         }
 
         item.setStatus(StatusItemPedido.PRONTO);
+        item.setDataPronto(LocalDateTime.now());
+
         return  CozinhaItemResponse.fromEntity(pedidoItemRepository.save(item));
     }
 
@@ -63,6 +67,8 @@ public class CozinhaService {
         }
 
         item.setStatus(StatusItemPedido.ENTREGUE);
+        item.setDataEntrega(LocalDateTime.now());
+
         return  CozinhaItemResponse.fromEntity(pedidoItemRepository.save(item));
     }
 
