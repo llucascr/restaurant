@@ -19,6 +19,8 @@ import dev.llucascr.restaurant.repository.PedidoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PagamentoService {
 
@@ -60,10 +62,12 @@ public class PagamentoService {
             mesa.setStatus(StatusMesa.LIVRE);
 
             Pagamento pagamento = new Pagamento();
+            pagamento.setCriadoEm(LocalDateTime.now());
             pagamento.setPedido(pedido);
             pagamento.setFormaPagamento(FormaPagamento.valueOf(formaPagamento));
             pagamento.setStatus(StatusPagamento.APROVADO);
             pagamento.setValor(fechamento.getTotal());
+            pagamento.setCodigoTransacaoExterna(response.codigoTransacao());
             pagamento.setDataPagamento(fechamento.getDataFechamento());
 
             pedidoRepository.save(pedido);
